@@ -3,7 +3,7 @@ from flask import Flask,Blueprint
 from flask_pymongo import PyMongo
 
 app= Flask(__name__)
-tmdb_bp = Blueprint('tmdb', __name__, url_prefix='/tmdb')
+# tmdb_bp = Blueprint('tmdb', __name__, url_prefix='/tmdb')
 
 TMDB_API_KEY = 'bdafc4661430ae309b0b69639ed9c4ed'
 # app.config['MONGO_URI'] = 'mongodb://localhost:27017/tmdbdb'
@@ -13,6 +13,6 @@ TMDB_API_KEY = 'bdafc4661430ae309b0b69639ed9c4ed'
 # DB_NAME = 'tmdb_database'
 # db = client[DB_NAME]
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/metadata_db"
 mongo = PyMongo(app)
 

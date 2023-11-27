@@ -1,4 +1,8 @@
-from config import tmdb_bp,app
+from config import app
+from movie_routes import movies_bp
+
+app.register_blueprint(movies_bp, url_prefix='/movies')
+
 
 
 
