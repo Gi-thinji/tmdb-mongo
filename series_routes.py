@@ -1,6 +1,6 @@
 #series_routes.py
 from flask import Blueprint,jsonify
-from config import TMDB_API_KEY,mongo
+from config import tmdb_api_key,mongo
 import requests
 
 TMDB_API_URL = 'https://api.themoviedb.org/3/'
@@ -11,7 +11,7 @@ series_bp = Blueprint('series_bp',__name__)
 def fetch_series():
     try:
         endpoint = 'tv/top_rated'
-        params = {'api_key': TMDB_API_KEY}
+        params = {'api_key': tmdb_api_key}
         response = requests.get(f'{TMDB_API_URL}{endpoint}', params=params)
         response.raise_for_status
 
