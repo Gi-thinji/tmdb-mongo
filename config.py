@@ -1,3 +1,4 @@
+# config.py
 from flask import Flask,Blueprint
 # from pymongo import MongoClient
 from flask_pymongo import PyMongo
@@ -6,7 +7,7 @@ import os
 
 load_dotenv()
 
-app= Flask(__name__)
+# app= Flask(__name__)
 # tmdb_bp = Blueprint('tmdb', __name__, url_prefix='/tmdb')
 
 # TMDB_API_KEY = 'bdafc4661430ae309b0b69639ed9c4ed'
@@ -20,6 +21,13 @@ app= Flask(__name__)
 tmdb_api_key = os.getenv('TMDB_API_KEY')
 mongo_uri = os.getenv('MONGO_URI')
 
-app.config["MONGO_URI"] = mongo_uri
-mongo = PyMongo(app)
+# app.config["MONGO_URI"] = mongo_uri
+# mongo = PyMongo(app)
 
+class FlaskAppWrapper:
+    def __init__(self):
+        self.app = Flask(__name__)
+        self.app.config["MONGO_URI"] = mongo_uri
+        self.mongo = PyMongo(self.app)
+
+app = FlaskAppWrapper()

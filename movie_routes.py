@@ -1,6 +1,9 @@
+# movie_routes.py
 from flask import Blueprint,jsonify
-from config import tmdb_api_key,mongo
+from config import tmdb_api_key,app
 import requests
+
+mongo = app.mongo
 
 TMDB_API_URL = 'https://api.themoviedb.org/3/'
 
