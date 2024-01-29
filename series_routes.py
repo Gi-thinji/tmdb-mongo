@@ -15,7 +15,7 @@ def fetch_series():
         endpoint = 'tv/top_rated'
         params = {'api_key': tmdb_api_key}
         response = requests.get(f'{TMDB_API_URL}{endpoint}', params=params)
-        response.raise_for_status
+        response.raise_for_status()
 
         tv_series = response.json()['results']
 

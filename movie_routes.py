@@ -15,7 +15,7 @@ def fetch_movies():
         endpoint = 'movie/top_rated'
         params = {'api_key': tmdb_api_key}
         response = requests.get(f'{TMDB_API_URL}{endpoint}', params=params)
-        response.raise_for_status
+        response.raise_for_status()
 
         movies = response.json()['results']
 
