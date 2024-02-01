@@ -13,6 +13,9 @@ search_bp = Blueprint('search', __name__)
 
 meilisearch_url = os.getenv('MEILISEARCH_URL')
 mongo_uri= os.getenv('MONGO_URI')
+master_key = os.getenv('MEILISEARCH_MASTER_KEY')
+
+# meilisearch_client.set_master_key('your_master_key')
 
 #connection to MongoDB
 client = MongoClient(mongo_uri)
@@ -22,7 +25,7 @@ collection_name = db['movies']
 #Connection to Meilisearch
 meilisearch_client = meilisearch.Client(meilisearch_url)
 # client = Client(meilisearch_url)
-
+# meilisearch_client.set_master_key('your_master_key')
 #Add indexes
 meilisearch_index_name = 'movies'
 meilisearch_index = meilisearch_client.index(meilisearch_index_name)
