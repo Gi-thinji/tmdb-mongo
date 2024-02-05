@@ -1,6 +1,9 @@
 from flask import Blueprint, jsonify
 from config import tmdb_api_key, app
 import requests
+from logger_config import logger_config
+
+logger = logger_config()
 
 mongo = app.mongo
 
@@ -16,12 +19,14 @@ def fetch_and_save_episodes(series_id):
         if series_details:
             all_episodes = fetch_tvshow_episodes(series_id)
             save_episodes_to_db(series_id,all_episodes)
+            logger.info('Episodes fetched and saved successfully')
             return jsonify({'message': 'Episodes fetched and saved successfully'})
-        
+        logger.error('Error fetching TV show details')
         return jsonify({'success': False, 'message': 'Error fetching TV show details'}), 500
 
 
     except requests.RequestException as e:
+        logger.error(f'Error fetching TV show episodes: {str(e)}')
         return jsonify({'success': False, 'message': f'Error fetching TV show episodes: {str(e)}'}),500
     
 def fetch_tvshow_episodes(series_id):
@@ -42,6 +47,7 @@ def fetch_tvshow_episodes(series_id):
         return all_episodes
     
     except requests.RequestException as e:
+        logger.error(f'Error fetching TV show episodes: {str(e)}')
         return jsonify({'success': False, 'message': f'Error fetching TV show episodes: {str(e)}'}), 500
 
 
@@ -59,6 +65,7 @@ def fetch_tvshow_details(series_id):
         return series_data
 
     except requests.RequestException as e:
+        logger.error(f'Error fetching TV show details: {str(e)}')
         return jsonify({'success': False, 'message': f'Error fetching TV show details: {str(e)}'}),500
     
 
@@ -79,6 +86,7 @@ def save_episodes_to_db(series_id,all_episodes):
                 mongo.db.episodes.insert_one(episode_data)
 
     except Exception as e:
+        logger.error(f'Error saving episodes to MongoDB: {str(e)}')
         return jsonify({'success': False, 'message': f'Error saving episodes to MongoDB: {str(e)}'}),500
 
 

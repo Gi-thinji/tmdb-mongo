@@ -2,6 +2,9 @@
 from flask import Blueprint,jsonify
 from config import tmdb_api_key,app
 import requests
+from logger_config import logger_config
+
+logger = logger_config()
 
 mongo = app.mongo
 
@@ -20,11 +23,12 @@ def fetch_series(series_id):
         tv_show = response.json()
 
         save_to_db(tv_show)
-
+        logger.info('TV series fetched and saved successfully')
         return jsonify({'message': 'TV series fetched and saved successfully'})
-
+        
     except requests.RequestException as e :
-        return jsonify({'success': False, 'message': f'Error fetching movies: {str(e)}'}),500
+        logger.error(f'Error fetching TV Series: {str(e)}')
+        return jsonify({'success': False, 'message': f'Error fetching TV Series: {str(e)}'}),500
 
 
 def save_to_db(tv_show):
@@ -32,6 +36,7 @@ def save_to_db(tv_show):
         mongo.db.tv_series.delete_many({})
 
         mongo.db.tv_series.insert_one(tv_show)
+        logger.info("TV Series saved to MongoDB successfully")
     except Exception as e:
-        
+        logger.error(f'Error saving TV series to MongoDB: {str(e)}')
         return jsonify({ 'message': f'Error saving TV series to MongoDB: {str(e)}'}),500
