@@ -43,11 +43,13 @@ def fetch_movies():
         movies = response.json()['results']
 
         save_to_db(movies)
+
         logger.info("Movies fetched and saved successfully")
 
         return jsonify({'message': 'Movies fetched and saved successfully'})
     except requests.RequestException as e:
         logger.error(f'Error fetching movies: {str(e)}')
+
         return jsonify({'success': False, 'message': f'Error fetching movies: {str(e)}'})
 
 
@@ -60,9 +62,11 @@ def save_to_db(movies):
         mongo.db.movies.delete_many({})
 
         mongo.db.movies.insert_many(movies)
+
         logger.info("Movies saved to MongoDB successfully")
     except Exception as e:
         logger.error(f'Error saving movies to MongoDB: {str(e)}')
+
         return jsonify({ 'message': f'Error saving movies to MongoDB: {str(e)}'})
 
 
